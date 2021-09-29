@@ -18,5 +18,6 @@ int stackIsGood(const struct myStack* Stack);
 void stackDump (const struct myStack* Stack, int keyOfMistake);
 
 void stackPush(struct myStack* Stack, const int value);
+void stackPop(struct myStack* Stack);
 
 #endif // STACK_H_INCLUDED

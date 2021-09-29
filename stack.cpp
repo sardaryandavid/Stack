@@ -15,7 +15,7 @@ void stackConstructor(struct myStack* Stack) {
     stackAssert(Stack);
 }
 
-void stackDestructor(struct MyStack* Stack) {
+void stackDestructor(struct myStack* Stack) {
     free(Stack->ptrOnStack);
 }
 
@@ -26,8 +26,24 @@ void stackPush(struct myStack* Stack, const int value) {
         printf("It is too big stack\n");
         assert(Stack->sizeOfStack + 1 < Stack->maxSizeOfStack);
     }
+
+    *((Stack->ptrOnStack)++) = value;
+
+    stackAssert(Stack);
 }
 
+void stackPop(struct myStack* Stack) {
+    stackAssert(Stack);
+
+    if(Stack->sizeOfStack <= 0) {
+        printf("Stack is epmty");
+        assert(Stack->sizeOfStack > 0);
+    }
+
+    *((Stack->ptrOnStack)--) = 0;
+
+    stackAssert(Stack);
+}
 void stackAssert(struct myStack* Stack) {
     int keyOfMistake = 0;
 
@@ -68,16 +84,16 @@ void stackDump (const struct myStack* Stack, int keyOfMistake) {
     }
 
     printf("Pointer on stack = %p\n", Stack->ptrOnStack);
-    printf("Stack size = %ld", Stack->sizeOfStack);
+    printf("Stack size = %zd", Stack->sizeOfStack);
     exit(1);
 }
 
-void printStack(struct MyStack* Stack) {
+void printStack(struct myStack* Stack) {
     size_t index = 0;
 
-//    while(index++ < Stack->sizeOfStack) {
-//        printf("%d ", *((Stack->ptrOnStack) + index));
-//    }
+    while(index++ < Stack->sizeOfStack) {
+        printf("%d ", *((Stack->ptrOnStack) + index));
+    }
 
     printf("\n");
 }

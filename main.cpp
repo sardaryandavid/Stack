@@ -5,7 +5,7 @@
 
 int main()
 {
-
+    struct myStack myFirstStack;
 
 
 
