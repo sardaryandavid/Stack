@@ -7,7 +7,7 @@ struct myStack {
   int* ptrOnStack = nullptr;
   size_t sizeOfStack = -1;
 
-  const size_t maxSizeOfStack;
+  const size_t maxSizeOfStack = 100;
 };
 
 void stackConstructor(struct myStack* Stack);
