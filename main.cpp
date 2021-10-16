@@ -1,13 +1,12 @@
 #include <stdio.h>
+#include <iostream>
 
 #include "stack.h"
 
-
 int main()
 {
-    struct myStack myFirstStack;
-
-
 
     return 0;
 }
+
+
