@@ -32,8 +32,7 @@ void stackPush(struct myStack* Stack, const int value) {
     stackAssert(Stack, INFORMATION);
 }
 
-//многотиповый: typedef
-// в switch dump
+
 
 void stackPop(struct myStack* Stack) {
     stackAssert(Stack, INFORMATION);
