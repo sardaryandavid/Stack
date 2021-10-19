@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-enum keyOfMistake {nullStackPtr = -100, nullPtrOnStack, negativeSize, noMistake};
+//enum keyOfMistake {nullStackPtr = -100, nullPtrOnStack, negativeSize, noMistake};
 
 void stackConstructor(struct myStack* Stack) {
     Stack->ptrOnStack = (int*) calloc(Stack->maxSizeOfStack, sizeof(Stack->maxSizeOfStack));
@@ -25,28 +25,28 @@ void stackPush(struct myStack* Stack, const int value) {
     stackAssert(Stack, INFORMATION);
 
     if(Stack->sizeOfStack + 1 > Stack->maxSizeOfStack) {
-        printf("It is too big stack\n");
-        assert(Stack->sizeOfStack + 1 < Stack->maxSizeOfStack);
+        Stack->ptrOnStack = (int*) realloc(Stack->ptrOnStack, Stack->sizeOfStack * 2);
     }
 
-    *((Stack->ptrOnStack)++) = value;
-    ++Stack->sizeOfStack;
-
+    *(Stack->ptrOnStack + Stack->sizeOfStack++) = value;
     stackAssert(Stack, INFORMATION);
 }
+
+//многотиповый: typedef
+// в switch dump
 
 void stackPop(struct myStack* Stack) {
     stackAssert(Stack, INFORMATION);
 
     if(Stack->sizeOfStack <= 0) {
-        printf("Stack is empty");
-        assert(Stack->sizeOfStack > 0);
+        stackDump(Stack, negativeSize, INFORMATION);
     }
 
-    *((Stack->ptrOnStack)--) = 0;
+    *(Stack->ptrOnStack + Stack->sizeOfStack--) = 0;
 
     stackAssert(Stack, INFORMATION);
 }
+
 void stackAssert(struct myStack* Stack, const char* fileOfMistake, int stringOfMistake, const char* functionOfMistake) {
     int keyOfMistake = 0;
 
@@ -54,7 +54,6 @@ void stackAssert(struct myStack* Stack, const char* fileOfMistake, int stringOfM
        (keyOfMistake = stackIsGood(Stack)) == nullPtrOnStack ||
        (keyOfMistake = stackIsGood(Stack)) == negativeSize) {
         stackDump(Stack, keyOfMistake, fileOfMistake, stringOfMistake, functionOfMistake);
-
     }
 }
 
@@ -76,7 +75,7 @@ int stackIsGood(const struct myStack* Stack) {
 
 void stackDump(struct myStack* Stack, int keyOfMistake,
                const char* fileOfMistake, int stringOfMistake, const char* functionOfMistake) {
-    printf("\x1b[32mFilename: %s, line of program: %d, function: %s\x1b[0m\n",
+    printf("\x1b[32m  Filename: %s, line of program: %d, function: %s  \x1b[0m\n",
             fileOfMistake, stringOfMistake, functionOfMistake);
 
     switch (keyOfMistake) {
@@ -100,13 +99,13 @@ void stackDump(struct myStack* Stack, int keyOfMistake,
 
     printStack(Stack);
 
-    exit(1);
+   // exit(1);
 }
 
 void stackResize(struct myStack* Stack, size_t newSize) {
     stackAssert(Stack, INFORMATION);
 
-    Stack->ptrOnStack = (int*) realloc(Stack->ptrOnStack, Stack->sizeOfStack * 2);
+    Stack->ptrOnStack = (int*) realloc(Stack->ptrOnStack, newSize);
 
     stackAssert(Stack, INFORMATION);
 }
@@ -114,10 +113,14 @@ void stackResize(struct myStack* Stack, size_t newSize) {
 void printStack(struct myStack* Stack) {
     size_t index = 0;
 
-    while(index++ < Stack->sizeOfStack) {
+    while(index < Stack->sizeOfStack) {
         printf("%d ", *((Stack->ptrOnStack) + index));
+        ++index;
     }
 
     printf("\n");
 }
 
+void stackCopy(struct myStack* stackTo, struct myStack* stackFrom) {
+
+}
