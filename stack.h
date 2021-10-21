@@ -1,6 +1,3 @@
-#ifndef STACK_H_INCLUDED
-#define STACK_H_INCLUDED
-
 #include <cstdlib>
 #include <stdio.h>
 #include <assert.h>
@@ -12,14 +9,12 @@
 #define printInformation printf("\x1b[32mFilename: %s, line of program: %d, function: %s\x1b[0m", INFORMATION);
 
 #define CAT(x,y) x##y
-#define CATforType(x,y) #x#y
+#define CATSTR(x,y) #x#y
 
 #define myStack(x) CAT(myStack_, x)
-#define myStackType(x) CATforType(myStack_, x)
+#define myStackStr(x) CATSTR(myStack_, x)
 
 #define getName(name) #name
-
-enum keyOfMistake {nullStackPtr = -100, nullPtrOnStack, negativeSize, noMistake};
 
 struct myStack(TYPE) {
   TYPE* ptrOnStack = nullptr;
@@ -111,7 +106,7 @@ void stackDump(struct myStack(TYPE)* Stack, int keyOfMistake,
                const char* fileOfMistake, int stringOfMistake, const char* functionOfMistake) {
     printf("\x1b[32m  Filename: %s, line of program: %d, function: %s  \x1b[0m\n",
             fileOfMistake, stringOfMistake, functionOfMistake);
-    printf("Stack type: %s\n", myStackType(TYPE));
+    printf("Stack type: %s\n", myStackStr(TYPE));
 
     switch (keyOfMistake) {
         case nullStackPtr:
@@ -128,7 +123,7 @@ void stackDump(struct myStack(TYPE)* Stack, int keyOfMistake,
     printf("\n");
 
     printf("Pointer on stack(array) = %p\n", Stack->ptrOnStack);
-    printf("Stack size = %zu\n", Stack->sizeOfStack);
+    printf("Stack size = %zd\n", Stack->sizeOfStack);
     printf("Pointer on Stack: %p\n", Stack);
 
     printStack(Stack);
@@ -148,15 +143,15 @@ void printStack(struct myStack(TYPE)* Stack) {
     size_t index = 0;
 
     while(index < Stack->sizeOfStack) {
-        if(strcmp(myStackType(TYPE), "myStack_int") == 0) {
+        if(strcmp(myStackStr(TYPE), "myStack_int") == 0) {
             printf("%d ", *((Stack->ptrOnStack) + index));
         }
 
-        if(strcmp(myStackType(TYPE), "myStack_char") == 0) {
+        if(strcmp(myStackStr(TYPE), "myStack_char") == 0) {
             printf("%c ", *((Stack->ptrOnStack) + index));
         }
 
-        if(strcmp(myStackType(TYPE), "myStack_long long") == 0) {
+        if(strcmp(myStackStr(TYPE), "myStack_long long") == 0) {
             printf("%ld ", *((Stack->ptrOnStack) + index));
         }
 
@@ -169,5 +164,3 @@ void printStack(struct myStack(TYPE)* Stack) {
 void stackCopy(struct myStack(TYPE)* stackTo, struct myStack(TYPE)* stackFrom) {
 
 }
-
-#endif // STACK_H_INCLUDED
