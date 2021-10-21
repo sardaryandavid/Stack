@@ -6,10 +6,8 @@
 #include <stdio.h>
 #include <assert.h>
 
-//enum keyOfMistake {nullStackPtr = -100, nullPtrOnStack, negativeSize, noMistake};
-
 void stackConstructor(struct myStack* Stack) {
-    Stack->ptrOnStack = (int*) calloc(Stack->maxSizeOfStack, sizeof(Stack->maxSizeOfStack));
+    Stack->ptrOnStack = (TYPE*) calloc(Stack->maxSizeOfStack, sizeof(Stack->maxSizeOfStack));
     Stack->sizeOfStack = 0;
 
     stackAssert(Stack, INFORMATION);
@@ -21,18 +19,17 @@ void stackDestructor(struct myStack* Stack) {
     free(Stack->ptrOnStack);
 }
 
-void stackPush(struct myStack* Stack, const int value) {
+void stackPush(struct myStack* Stack, const TYPE value) {
     stackAssert(Stack, INFORMATION);
 
     if(Stack->sizeOfStack + 1 > Stack->maxSizeOfStack) {
-        Stack->ptrOnStack = (int*) realloc(Stack->ptrOnStack, Stack->sizeOfStack * 2);
+        Stack->ptrOnStack = (TYPE*) realloc(Stack->ptrOnStack, Stack->sizeOfStack * 2);
     }
 
     *(Stack->ptrOnStack + Stack->sizeOfStack++) = value;
+
     stackAssert(Stack, INFORMATION);
 }
-
-
 
 void stackPop(struct myStack* Stack) {
     stackAssert(Stack, INFORMATION);
@@ -76,7 +73,7 @@ void stackDump(struct myStack* Stack, int keyOfMistake,
                const char* fileOfMistake, int stringOfMistake, const char* functionOfMistake) {
     printf("\x1b[32m  Filename: %s, line of program: %d, function: %s  \x1b[0m\n",
             fileOfMistake, stringOfMistake, functionOfMistake);
-
+    printf("Stack type: %s\n", myStack(TYPE));
     switch (keyOfMistake) {
         case nullStackPtr:
             printf("key of mistake: null pointer on struct MyStack\n");
@@ -104,7 +101,7 @@ void stackDump(struct myStack* Stack, int keyOfMistake,
 void stackResize(struct myStack* Stack, size_t newSize) {
     stackAssert(Stack, INFORMATION);
 
-    Stack->ptrOnStack = (int*) realloc(Stack->ptrOnStack, newSize);
+    Stack->ptrOnStack = (TYPE*) realloc(Stack->ptrOnStack, newSize);
 
     stackAssert(Stack, INFORMATION);
 }
@@ -113,7 +110,18 @@ void printStack(struct myStack* Stack) {
     size_t index = 0;
 
     while(index < Stack->sizeOfStack) {
-        printf("%d ", *((Stack->ptrOnStack) + index));
+        if(strcmp(myStack(TYPE), "myStack_int") == 0) {
+            printf("%d ", *((Stack->ptrOnStack) + index));
+        }
+
+        if(strcmp(myStack(TYPE), "myStack_char") == 0) {
+            printf("%c ", *((Stack->ptrOnStack) + index));
+        }
+
+        if(strcmp(myStack(TYPE), "myStack_long long") == 0) {
+            printf("%ld ", *((Stack->ptrOnStack) + index));
+        }
+
         ++index;
     }
 
