@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <iostream>
 
-enum keyOfMistake {nullStackPtr = -100, nullPtrOnStack, negativeSize, noMistake};
-
 #define TYPE char
 #include "stack.h"
 
